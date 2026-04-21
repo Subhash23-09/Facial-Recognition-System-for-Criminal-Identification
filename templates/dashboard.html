@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: white;
+      overflow-x: hidden;
+      transition: background 0.5s ease-in-out;
+    }
+
+    .navbar {
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 2.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      transition: background 0.3s ease-in-out;
+    }
+
+    .navbar h2 {
+      margin: 0;
+      font-size: 4rem;
+      letter-spacing: 1px;
+    }
+
+    .navbar .right a {
+      color: #fff;
+      font-size: 4rem;
+      text-decoration: none;
+      border: 1px solid #fff;
+      padding: 0.8rem 1.6rem;
+      border-radius: 25px;
+      transition: background-color 0.3s ease;
+    }
+
+    .navbar .right a:hover {
+      background-color: #ff7eb3;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 4rem auto;
+      padding: 3rem;
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      opacity: 0;
+      animation: fadeInContent 1s forwards;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 3rem;
+      font-size: 4rem;
+      color: #333;
+      font-weight: bold;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .card {
+      background-color: #007bff;
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 16px;
+      text-align: center;
+      font-size:3rem;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      animation: fadeInCard 0.6s forwards;
+      font-weight: 600;
+    }
+
+    .card:hover {
+      background-color: #0056b3;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card small {
+      font-size: 3rem;
+      font-weight: normal;
+      display: block;
+      margin-top: 15px;
+      opacity: 0.9;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    @keyframes fadeInContent {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInCard {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card:nth-child(1) {
+      animation-delay: 0.3s;
+    }
+
+    .card:nth-child(2) {
+      animation-delay: 0.5s;
+    }
+
+    .card:nth-child(3) {
+      animation-delay: 0.7s;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <h2>Welcome, {{ username }}</h2>
+    <div class="right">
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </div>
+
+  <!-- Dashboard Container -->
+  <div class="container">
+    <h1>Dashboard</h1>
+    <div class="grid">
+      <a href="{{ url_for('upload') }}">
+        <div class="card">
+          Criminal Identification
+          <small>(Scan Face)</small>
+        </div>
+      </a>
+      <a href="{{ url_for('missing_person') }}">
+        <div class="card">
+          Missing Person Identification
+        </div>
+      </a>
+      <a href="{{ url_for('add_criminal') }}">
+        <div class="card">
+          Add New Criminal
+          <small>(Fill Details & Image)</small>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>

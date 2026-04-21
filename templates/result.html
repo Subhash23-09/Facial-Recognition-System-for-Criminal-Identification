@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Match Result</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .navbar {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .image-container > div {
+            text-align: center;
+            background: #fff;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .btn, .download-btn {
+            display: inline-block;
+            margin: 2rem auto;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover, .download-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Dark Mode */
+        .dark-mode {
+            background-color: #1e1e1e;
+            color: #f5f5f5;
+        }
+
+        .dark-mode .navbar {
+            background-color: #111;
+        }
+
+        .dark-mode .image-container > div {
+            background-color: #2a2a2a;
+            color: #f5f5f5;
+        }
+
+        .dark-mode .btn,
+        .dark-mode .download-btn {
+            background-color: #444;
+        }
+
+        /* Modal Preview */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .modal-content {
+            display: block;
+            margin: 10% auto;
+            max-width: 600px;
+            width: 90%;
+            border-radius: 8px;
+        }
+
+        .close {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>Face Match Result</h1>
+        <button id="theme-toggle" class="btn">🌙 Dark Mode</button>
+    </div>
+
+    <div class="image-container">
+        <div>
+            <h3>Original Image</h3>
+            <img src="{{ original_url }}" alt="Original Image" width="200">
+        </div>
+
+        <div>
+            <h3>Enhanced Face</h3>
+            <img src="{{ enhanced_url }}" alt="Enhanced Face" width="200">
+        </div>
+
+        {% if matched_url %}
+        <div>
+            <h3>Matched Image</h3>
+            <img src="{{ matched_url }}" alt="Matched Image" width="200">
+            <p><strong>Detected Person:</strong> {{ matched_name.replace('_', ' ').title() }}</p>
+            <p><strong>Match Percentage:</strong> {{ match_percentage }}%</p>
+        </div>
+        {% else %}
+        <div>
+            <h3>No Match Found</h3>
+            <p>No matching image was found in the database.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <div style="text-align: center;">
+        <a href="{{ url_for('upload') }}" class="btn">Upload Another Image</a>
+    </div>
+
+    <!-- Modal -->
+    <div id="imgModal" class="modal" onclick="this.style.display='none'">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <script>
+        // Dark mode toggle
+        const toggleBtn = document.getElementById("theme-toggle");
+        toggleBtn.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            toggleBtn.textContent = document.body.classList.contains("dark-mode") ? "☀️ Light Mode" : "🌙 Dark Mode";
+        });
+
+        // Image modal zoom
+        document.querySelectorAll("img").forEach(img => {
+            img.style.cursor = "zoom-in";
+            img.addEventListener("click", () => {
+                document.getElementById("imgModal").style.display = "block";
+                document.getElementById("modalImage").src = img.src;
+            });
+        });
+
+        // Close modal on outside click
+        const modal = document.getElementById("imgModal");
+        modal.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+    </script>
+</body>
+</html>

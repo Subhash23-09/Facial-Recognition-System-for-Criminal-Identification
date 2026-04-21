@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition</title>
+</head>
+<body>
+    <h1>Upload Image for Criminal Detection</h1>
+    <input type="file" id="fileInput">
+    <button onclick="uploadImage()">Detect</button>
+    <p id="result"></p>
+
+    <script>
+        function uploadImage() {
+            let fileInput = document.getElementById('fileInput').files[0];
+            if (!fileInput) {
+                alert("Please select an image first.");
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append("image", fileInput);
+
+            fetch("http://127.0.0.1:5000/detect", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerText = data.message + 
+                    (data.criminal ? " - " + data.criminal : "");
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>

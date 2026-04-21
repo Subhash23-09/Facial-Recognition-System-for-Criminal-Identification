@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Missing Person Detection</title>
+  <link rel="stylesheet" href="styles/missing.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Missing Person Detection</h2>
+
+    <div class="upload-section">
+      <label for="imageUpload">Upload Person's Image:</label>
+      <input type="file" id="imageUpload" accept="image/*">
+      <button onclick="processImage()">Detect</button>
+    </div>
+
+    <div id="result-section" style="display: none;">
+      <h3>Detection Results:</h3>
+      <div class="result-images">
+        <div>
+          <p>Enhanced Image</p>
+          <img id="enhancedImage" src="" alt="Enhanced Image">
+        </div>
+        <div>
+          <p>Matched Image</p>
+          <img id="matchedImage" src="" alt="Matched Image">
+        </div>
+      </div>
+      <p><strong>Name:</strong> <span id="matchedName"></span></p>
+      <p><strong>Match Confidence:</strong> <span id="matchConfidence"></span>%</p>
+    </div>
+  </div>
+
+  <script src="scripts/missing.js"></script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Face Recognition System</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(45deg,rgb(117, 230, 255),rgb(126, 218, 255));
+      color: #fff;
+      transition: background 0.5s ease-in-out, color 0.3s ease;
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar h2 {
+      font-size: 2rem;
+      letter-spacing: 2px;
+    }
+
+    .navbar .info-icon {
+      cursor: pointer;
+      font-size: 1.5rem;
+      margin-left: 1.5rem;
+      background: none;
+      color: #fff;
+      border: none;
+      transition: transform 0.3s ease;
+    }
+
+    .navbar .info-icon:hover {
+      transform: scale(1.2);
+    }
+
+    /* Container Styles */
+    .container {
+      max-width: 700px;
+      margin: 5rem auto;
+      padding: 2.5rem;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .container h3 {
+      font-size: 2rem;
+      color: #333;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+
+    input[type="file"] {
+      margin: 1rem 0;
+      padding: 12px;
+      background-color: #f9f9f9;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 1.1rem;
+      color: #333;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="file"]:hover {
+      border-color: #007bff;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #007bff;
+      color: white;
+      padding: 12px 22px;
+      border-radius: 30px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    }
+
+    .link-btn {
+      margin-top: 2rem;
+      display: inline-block;
+      text-decoration: none;
+      color: #007bff;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .link-btn:hover {
+      color: #0056b3;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+      animation: fadeIn 0.5s;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 15% auto;
+      padding: 30px;
+      border-radius: 12px;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      animation: slideUp 0.5s;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 32px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: black;
+    }
+
+    /* Dark Mode */
+    .dark-mode {
+      background-color: #1a1a1a;
+      color: #ddd;
+    }
+
+    .dark-mode .container {
+      background-color: #2a2a2a;
+      color: #ddd;
+    }
+
+    .dark-mode .navbar {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .dark-mode .btn {
+      background-color: #444;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .dark-mode .btn:hover {
+      background-color: #333;
+    }
+
+    .dark-mode .modal-content {
+      background-color: #333;
+      color: #ddd;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <h2>Face Recognition System</h2>
+    <div>
+      <button id="theme-toggle" class="btn">🌙 Dark Mode</button>
+      <button class="info-icon" id="info-btn" title="About the system">ℹ️</button>
+    </div>
+  </div>
+
+  <div class="container">
+    {% if session.username %}
+      <h3>Welcome, {{ session.username }}</h3>
+      <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required /><br />
+        <button type="submit" class="btn">Upload</button>
+      </form>
+      <br />
+      <a href="{{ url_for('logout') }}" class="link-btn">Logout</a>
+    {% else %}
+      <p>Please log in to continue</p>
+      <a href="{{ url_for('login') }}" class="btn">Login</a>
+    {% endif %}
+  </div>
+
+  <!-- Modal -->
+  <div id="info-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>System Description</h3>
+      <p>
+        This AI-powered system uses cutting-edge face recognition technology to help identify potential criminals and locate missing individuals.
+        It leverages:
+        <ul>
+          <li><strong>MTCNN</strong> for face detection</li>
+          <li><strong>Bicubic Interpolation & Bilateral Filtering</strong> for face enhancement</li>
+          <li><strong>ViT (Vision Transformer)</strong> for face embeddings</li>
+          <li><strong>Cosine Similarity</strong> for accurate face matching</li>
+        </ul>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Theme Toggle
+    const toggleBtn = document.getElementById("theme-toggle");
+    toggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+      toggleBtn.textContent = document.body.classList.contains("dark-mode")
+        ? "☀️ Light Mode"
+        : "🌙 Dark Mode";
+    });
+
+    // Modal
+    const modal = document.getElementById("info-modal");
+    const infoBtn = document.getElementById("info-btn");
+    const spanClose = document.getElementsByClassName("close")[0];
+
+    infoBtn.onclick = function () {
+      modal.style.display = "block";
+    }
+
+    spanClose.onclick = function () {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Missing Person Detection</title>
+  <link rel="stylesheet" href="styles/missing.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Missing Person Detection</h2>
+    <form action="/process-image" method="POST" enctype="multipart/form-data">
+      <label for="image">Upload Image of Missing Person:</label>
+      <input type="file" id="image" name="image" accept="image/*" required>
+      <button type="submit">Detect</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Criminal Match Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Criminal Match Result</h2>
+
+        <h4>Uploaded Image:</h4>
+        <img src="{{ url_for('static', filename='uploads/' + uploaded) }}" width="300">
+
+        <h4 class="mt-4">Best Match: {{ match }}</h4>
+        <p>Match Confidence: {{ similarity }}%</p>
+
+        <h4>Matched Image from Database:</h4>
+        <img src="{{ url_for('static', filename='matched/' + match) }}" width="300">
+
+        <br><br>
+        <a href="{{ url_for('upload') }}" class="btn btn-primary">Upload Another</a>
+    </div>
+</body>
+</html>
