@@ -1,5 +1,4 @@
 import mysql.connector
-
 # Database Configuration
 db_config = {
     "host": "localhost",
@@ -7,7 +6,6 @@ db_config = {
     "password": "admin23",
     "database": "FaceRecognitionDB"
 }
-
 # Function to initialize database
 def initialize_database():
     conn = mysql.connector.connect(host="localhost", user="root", password="admin23")
