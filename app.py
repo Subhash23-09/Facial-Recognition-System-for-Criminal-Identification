@@ -25,7 +25,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Device setup
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 # Models
 mtcnn = MTCNN(keep_all=True, device=device)
 vit_model = ViTModel.from_pretrained("google/vit-base-patch16-224-in21k").to(device)
